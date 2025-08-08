@@ -1,3 +1,7 @@
+import { RouterProvider } from "react-router";
+
+import { router } from "./routes";
+
 export function App() {
-  return <div className="text-red-700">Hello Dashboard</div>;
+  return <RouterProvider router={router} />;
 }
