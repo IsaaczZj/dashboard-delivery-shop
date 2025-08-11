@@ -1,16 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { signInForm, type SignInForm } from "@/schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import { toast } from "sonner";
 import z from "zod";
 
-const signInForm = z.object({
-  email: z.email("Digite um email válido"),
-});
-type SignInForm = z.infer<typeof signInForm>;
+
 export function SignIn() {
   const {
     handleSubmit,
@@ -47,7 +45,7 @@ export function SignIn() {
         <form className="space-y-4" onSubmit={handleSubmit(handleLogin)}>
           <div className="space-y-2">
             <Label htmlFor="email">Seu e-email</Label>
-            <Input id="email" type="" {...register("email")} />
+            <Input id="email" type="email" {...register("email")} />
             {errors.email?.message && (
               <p className="text-center text-red-700">Email inválido</p>
             )}

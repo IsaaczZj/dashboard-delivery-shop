@@ -1,21 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { signUpForm, type SignUpForm } from "@/schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import z from "zod";
 
-const signUpForm = z.object({
-  email: z.email("Digite um email válido"),
-  restaurantName: z
-    .string()
-    .min(5, "O restaurante precisa ter no mínimo 5 caracteres"),
-  managerName: z.string().min(5, "Seu nome precisa ter no mínimo 5 caracteres"),
-  phone: z.string(),
-});
-type SignUpForm = z.infer<typeof signUpForm>;
 export function SignUp() {
   const {
     handleSubmit,
