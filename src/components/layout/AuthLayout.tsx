@@ -1,4 +1,4 @@
-import { CookingPot, Pizza } from "lucide-react";
+import { CookingPot } from "lucide-react";
 import { Outlet } from "react-router";
 import img from "@/assets/img-login.svg";
 export function AuthLayout() {
