@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -27,6 +28,13 @@ export function SignIn() {
   }
   return (
     <div className="p-8">
+      <Button
+        asChild
+        className="absolute top-8 right-8 text-xl font-semibold"
+        variant="ghost"
+      >
+        <Link to="/sign-up">Novo estabelecimento</Link>
+      </Button>
       <div className="flex w-[450px] flex-col justify-center gap-6">
         <header className="flex flex-col gap-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">

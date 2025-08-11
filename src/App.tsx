@@ -6,7 +6,7 @@ export function App() {
   return (
     <>
       <Toaster richColors />
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </>
   );
 }
