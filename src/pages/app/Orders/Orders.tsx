@@ -10,7 +10,7 @@ import { OrdersFilters } from "./OrderFilters";
 
 export function Orders() {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex min-h-screen flex-col gap-4">
       <h1 className="text-3xl font-bold tracking-wide">Pedidos</h1>
       <div className="space-y-4">
         <OrdersFilters />
