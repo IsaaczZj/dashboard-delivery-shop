@@ -2,6 +2,8 @@ import { CookingPot, Home, UtensilsCrossed } from "lucide-react";
 import { Link } from "react-router";
 import { Separator } from "./ui/separator";
 import { NavLink } from "./NavLink";
+import { ThemeToggle } from "./theme/ThemeToggle";
+import { AccontMenu } from "./AccontMenu";
 
 export function Header() {
   return (
@@ -19,6 +21,10 @@ export function Header() {
             Inicio
           </NavLink>
         </nav>
+        <div className="ml-auto flex items-center gap-3">
+          <ThemeToggle />
+          <AccontMenu/>
+        </div>
       </div>
     </div>
   );
