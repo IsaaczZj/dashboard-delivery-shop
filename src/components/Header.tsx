@@ -18,12 +18,12 @@ export function Header() {
           </NavLink>
           <NavLink to="/orders">
             <UtensilsCrossed className="size-5" />
-            Inicio
+            Pedidos
           </NavLink>
         </nav>
         <div className="ml-auto flex items-center gap-3">
           <ThemeToggle />
-          <AccontMenu/>
+          <AccontMenu />
         </div>
       </div>
     </div>
