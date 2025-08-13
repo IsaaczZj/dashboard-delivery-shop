@@ -6,9 +6,8 @@ export function OrderItem() {
   return (
     <TableRow>
       <TableCell className="py-4">
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" title="Detalhes do pedido">
           <Search className="size-3" />
-          <span className="sr-only">Detalhes do pedido</span>
         </Button>
       </TableCell>
       <TableCell className="font-mono text-xs">asdas2134asd58</TableCell>
