@@ -1,14 +1,22 @@
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { ArrowRight, Search, X } from "lucide-react";
+import { OrderDetails } from "./OrderDetails";
 
 export function OrderItem() {
   return (
     <TableRow>
       <TableCell className="py-4">
-        <Button variant="outline" size="sm" title="Detalhes do pedido">
-          <Search className="size-3" />
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="sm" title="Detalhes do pedido">
+              <Search className="size-3" />
+            </Button>
+          </DialogTrigger>
+
+          <OrderDetails />
+        </Dialog>
       </TableCell>
       <TableCell className="font-mono text-xs">asdas2134asd58</TableCell>
       <TableCell className="text-muted-foreground">Ha 15 minutos</TableCell>
