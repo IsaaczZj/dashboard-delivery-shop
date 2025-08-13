@@ -1,7 +1,7 @@
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { DashboardLayout } from "@/components/layout/Dashboard";
 import { Dashboard } from "@/pages/app/Dashboard";
-import { Orders } from "@/pages/app/Orders/Orders";
+import { Orders } from "@/pages/app/Orders";
 import { SignIn } from "@/pages/auth/SignIn";
 import { SignUp } from "@/pages/auth/SignUp";
 
