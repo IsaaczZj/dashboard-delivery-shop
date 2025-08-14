@@ -11,9 +11,13 @@ const data = [
   { products: "Baiana", amount: 56 },
 ];
 
-// const COLORS = {
-
-// }
+const COLORS = [
+  colors.sky[500],
+  colors.amber[500],
+  colors.violet[500],
+  colors.emerald[500],
+  colors.rose[500],
+];
 
 export function PopularProductsChart() {
   return (
@@ -38,10 +42,55 @@ export function PopularProductsChart() {
               outerRadius={86}
               innerRadius={60}
               strokeWidth={4}
-              
+              labelLine={false}
+              label={({
+                cx,
+                cy,
+                midAngle,
+                innerRadius,
+                outerRadius,
+                index,
+              }: {
+                cx?: number;
+                cy?: number;
+                midAngle?: number;
+                innerRadius?: number;
+                outerRadius?: number;
+                index?: number;
+              }) => {
+                if (
+                  typeof index !== "number" ||
+                  typeof cx !== "number" ||
+                  typeof cy !== "number" ||
+                  typeof midAngle !== "number" ||
+                  typeof innerRadius !== "number" ||
+                  typeof outerRadius !== "number"
+                )
+                  return null;
+                const RADIAN = Math.PI / 180;
+                const radius = innerRadius + (outerRadius - innerRadius) + 20;
+                const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    className="fill-muted-foreground text-md"
+                    textAnchor={x > cx ? "start" : "end"}
+                    dominantBaseline="central"
+                  >
+                    {`${data[index].products.substring(0, 12)} - (${data[index].amount})`}
+                  </text>
+                );
+              }}
             >
-              {data.map((_,i )=>(
-                <Cell key={i} />
+              {data.map((_, i) => (
+                <Cell
+                  key={i}
+                  fill={COLORS[i]}
+                  className="stroke-[#18181b] hover:opacity-80"
+                />
               ))}
             </Pie>
           </PieChart>
