@@ -6,32 +6,34 @@ import { signInForm, type SignInForm } from "@/schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { Link, useSearchParams } from "react-router";
+import { Link, useLocation, useSearchParams } from "react-router";
 import { toast } from "sonner";
 
 export function SignIn() {
-  const [searchParams] = useSearchParams();
+  const { state } = useLocation();
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignInForm>({
     resolver: zodResolver(signInForm),
     defaultValues: {
-      email: searchParams.get("email") ?? "",
+      email: state.email ?? "",
     },
   });
 
-  const { mutateAsync: authenticate } = useMutation({
+  const { mutateAsync: authenticate, isPending } = useMutation({
     mutationFn: signIn,
-  });
-  async function handleLogin(data: SignInForm) {
-    try {
-      await authenticate({ email: data.email });
+    onSuccess: () => {
       toast.success("Bem vindo");
-    } catch (error) {
-      // toast.error("Credenciais inválidas")
-    }
+    },
+    onError: () => {
+      toast.error("Credenciais inválidas");
+    },
+  });
+
+  async function handleLogin(data: SignInForm) {
+    await authenticate({ email: data.email });
   }
   return (
     <div className="p-8">
@@ -62,7 +64,7 @@ export function SignIn() {
           <Button
             type="submit"
             className="h-11 w-full cursor-pointer"
-            disabled={isSubmitting}
+            disabled={isPending}
           >
             Acessar painel
           </Button>

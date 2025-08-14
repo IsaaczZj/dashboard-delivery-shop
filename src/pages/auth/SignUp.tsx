@@ -7,36 +7,36 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { log } from "console";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export function SignUp() {
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignUpForm>({ resolver: zodResolver(signUpForm) });
 
   const navigate = useNavigate();
 
-  const { mutateAsync: restaurants } = useMutation({
+  const { mutateAsync: restaurants, isPending } = useMutation({
     mutationFn: registerRestaurant,
-  });
-  async function handleLogin(data: SignUpForm) {
-    try {
-      await restaurants({
-        restaurantName: data.restaurantName,
-        email: data.email,
-        managerName: data.managerName,
-        phone: data.phone,
-      });
+    onSuccess: (_, { email }) => {
       toast.success("Restaurante cadastrado com sucesso");
-      navigate(`/sign-in?email=${data.email}`);
-    } catch (error) {
-      toast.error("Erro ao cadastrar restaurante");
-      console.log(error)
-    }
-    console.log(data);
+      navigate("/sign-in", { state: { email } });
+    },
+    onError: () => {
+      toast.error("Não foi possível cadastrar o restaurante");
+    },
+  });
+
+  async function handleLogin(data: SignUpForm) {
+    await restaurants({
+      restaurantName: data.restaurantName,
+      email: data.email,
+      managerName: data.managerName,
+      phone: data.phone,
+    });
   }
   return (
     <div className="p-8">
@@ -94,7 +94,7 @@ export function SignUp() {
           <Button
             type="submit"
             className="h-11 w-full cursor-pointer"
-            disabled={isSubmitting}
+            disabled={isPending}
           >
             Cadastrar
           </Button>
