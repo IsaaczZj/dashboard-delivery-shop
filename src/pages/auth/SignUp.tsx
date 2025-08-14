@@ -1,12 +1,14 @@
+import { registerRestaurant } from "@/api/register-restaurant";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signUpForm, type SignUpForm } from "@/schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { log } from "console";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
-
 
 export function SignUp() {
   const {
@@ -16,12 +18,23 @@ export function SignUp() {
   } = useForm<SignUpForm>({ resolver: zodResolver(signUpForm) });
 
   const navigate = useNavigate();
+
+  const { mutateAsync: restaurants } = useMutation({
+    mutationFn: registerRestaurant,
+  });
   async function handleLogin(data: SignUpForm) {
     try {
+      await restaurants({
+        restaurantName: data.restaurantName,
+        email: data.email,
+        managerName: data.managerName,
+        phone: data.phone,
+      });
       toast.success("Restaurante cadastrado com sucesso");
-      navigate("/sign-in");
+      navigate(`/sign-in?email=${data.email}`);
     } catch (error) {
       toast.error("Erro ao cadastrar restaurante");
+      console.log(error)
     }
     console.log(data);
   }

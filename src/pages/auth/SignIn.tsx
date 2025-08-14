@@ -1,28 +1,37 @@
+import { signIn } from "@/api/sign-in";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInForm, type SignInForm } from "@/schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { toast } from "sonner";
 
-
-
 export function SignIn() {
+  const [searchParams] = useSearchParams();
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<SignInForm>({ resolver: zodResolver(signInForm) });
+  } = useForm<SignInForm>({
+    resolver: zodResolver(signInForm),
+    defaultValues: {
+      email: searchParams.get("email") ?? "",
+    },
+  });
 
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signIn,
+  });
   async function handleLogin(data: SignInForm) {
     try {
-      toast.success("Enviamos um link de autenticação para seu email");
+      await authenticate({ email: data.email });
+      toast.success("Bem vindo");
     } catch (error) {
       // toast.error("Credenciais inválidas")
     }
-    console.log(data);
   }
   return (
     <div className="p-8">
