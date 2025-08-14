@@ -14,7 +14,6 @@ export function OrderItem() {
               <Search className="size-3" />
             </Button>
           </DialogTrigger>
-
           <OrderDetails />
         </Dialog>
       </TableCell>

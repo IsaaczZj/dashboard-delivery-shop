@@ -1,6 +1,8 @@
 import {
   Table,
   TableBody,
+  TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -34,9 +36,13 @@ export function Orders() {
                 <OrderItem key={i} />
               ))}
             </TableBody>
+            <TableFooter>
+              <TableCell colSpan={8}>
+                <Pagination pageIndex={0} totalRegisters={105} perPage={10} />
+              </TableCell>
+            </TableFooter>
           </Table>
         </div>
-        <Pagination pageIndex={0} totalRegisters={105} perPage={10}/>
       </div>
     </div>
   );
