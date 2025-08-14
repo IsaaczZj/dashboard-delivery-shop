@@ -1,9 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign } from "lucide-react";
+
 import { MonthRevenueCard } from "./MonthRevenueCard";
 import { MonthOrdersAmountCard } from "./MonthOrdersAmountCard";
 import { DayOrdersAmountCard } from "./DayOrdersAmountCard";
 import { MonthCanceledAmountCard } from "./MonthCanceledAmountCard";
+import { RevenueChart } from "./RevenueChart";
+import { PopularProductsChart } from "./PopularProdutcsChart";
 
 export function Dashboard() {
   return (
@@ -16,7 +17,10 @@ export function Dashboard() {
         <DayOrdersAmountCard />
         <MonthCanceledAmountCard />
       </div>
-      di
+      <div className="grid grid-cols-9 gap-4">
+        <RevenueChart />
+        <PopularProductsChart/>
+      </div>
     </div>
   );
 }
