@@ -80,7 +80,7 @@ export function PopularProductsChart() {
                     textAnchor={x > cx ? "start" : "end"}
                     dominantBaseline="central"
                   >
-                    {`${data[index].products.substring(0, 12)} - (${data[index].amount})`}
+                    {`${data[index].products.length > 12 ? data[index].products.substring(0, 12).concat("...") : data[index].products} - (${data[index].amount})`}
                   </text>
                 );
               }}

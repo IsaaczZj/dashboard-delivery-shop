@@ -1,5 +1,6 @@
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { DashboardLayout } from "@/components/layout/Dashboard";
+import { NotFound } from "@/pages/404";
 import { Dashboard } from "@/pages/app/Dashboard";
 import { Orders } from "@/pages/app/Orders";
 import { SignIn } from "@/pages/auth/SignIn";
@@ -11,6 +12,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <DashboardLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         path: "/",
