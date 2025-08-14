@@ -1,10 +1,10 @@
-
 import { MonthRevenueCard } from "./MonthRevenueCard";
 import { MonthOrdersAmountCard } from "./MonthOrdersAmountCard";
 import { DayOrdersAmountCard } from "./DayOrdersAmountCard";
 import { MonthCanceledAmountCard } from "./MonthCanceledAmountCard";
 import { RevenueChart } from "./RevenueChart";
 import { PopularProductsChart } from "./PopularProdutcsChart";
+import { useEffect } from "react";
 
 export function Dashboard() {
   return (
@@ -19,7 +19,7 @@ export function Dashboard() {
       </div>
       <div className="grid grid-cols-9 gap-4">
         <RevenueChart />
-        <PopularProductsChart/>
+        <PopularProductsChart />
       </div>
     </div>
   );
