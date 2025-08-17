@@ -8,7 +8,7 @@ interface ProfileRespose {
   email: string;
 }
 
-interface UpdateProfile {
+interface UpdateProfileRequest {
   name: string;
   description: string;
 }
