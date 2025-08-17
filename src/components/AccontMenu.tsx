@@ -8,15 +8,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getProfile } from "@/api/get-profile";
 import { getManagerRestaurant } from "@/api/get-managed-restaurant";
 import { Skeleton } from "./ui/skeleton";
 import { Dialog, DialogTrigger } from "./ui/dialog";
 import { DetailsStoresProfileDialog } from "./DetailsStoreProfileDialog";
 import { useState } from "react";
+import { logout } from "@/api/logout";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export function AccontMenu() {
+  const navigate = useNavigate();
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
@@ -25,8 +29,16 @@ export function AccontMenu() {
     useQuery({
       queryKey: ["managed-restaurant"],
       queryFn: getManagerRestaurant,
-      staleTime:Infinity
+      staleTime: Infinity,
     });
+
+  const { mutateAsync: singOutFn, isPending: isSigningOut } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      navigate("/sign-in", { replace: true });
+      toast.success('Até a proxima')
+    },
+  });
 
   return (
     <>
@@ -66,19 +78,16 @@ export function AccontMenu() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DialogTrigger>
-              <DropdownMenuItem
-              // onSelect={() => {
-              //   setTimeout(() => setIsDialogOpen(true), 0);
-
-              // }}
-              >
+              <DropdownMenuItem>
                 <Building className="size-5" />
                 <span>Perfil da loja</span>
               </DropdownMenuItem>
             </DialogTrigger>
-            <DropdownMenuItem>
-              <LogOut className="size-5" color="#e7000b" />
-              <span className="text-[#e7000b]">Sair</span>
+            <DropdownMenuItem disabled={isSigningOut} asChild>
+              <button onClick={() => singOutFn()} className="w-full">
+                <LogOut className="size-5" color="#e7000b" />
+                <span className="text-[#e7000b]">Sair</span>
+              </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
