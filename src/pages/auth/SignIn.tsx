@@ -25,7 +25,7 @@ export function SignIn() {
   const { mutateAsync: authenticate, isPending } = useMutation({
     mutationFn: signIn,
     onSuccess: () => {
-      toast.success("Bem vindo");
+      toast.success("Bem vindo, link de acesso enviado por e-mail");
     },
     onError: () => {
       toast.error("Credenciais inválidas");
