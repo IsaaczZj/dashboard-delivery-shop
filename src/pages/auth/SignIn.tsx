@@ -18,7 +18,7 @@ export function SignIn() {
   } = useForm<SignInForm>({
     resolver: zodResolver(signInForm),
     defaultValues: {
-      email: state.email ?? "",
+      email: state?.email ?? "",
     },
   });
 
