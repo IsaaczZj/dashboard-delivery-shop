@@ -1,4 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import {
   DialogContent,
@@ -18,12 +23,41 @@ import {
   setProfileSchame,
   type SetProfileSchema,
 } from "@/schemas/setProfileSchema";
+import { updateProfile } from "@/api/update-profile";
+import { toast } from "sonner";
 
 export function DetailsStoresProfileDialog() {
   const { data: managedRestuarant } = useQuery({
     queryFn: getManagerRestaurant,
     queryKey: ["managed-restaurant"],
+    staleTime: Infinity,
   });
+
+  const queryClient = useQueryClient();
+  const { mutateAsync: updateProfileMutate, isPending } = useMutation({
+    mutationFn: updateProfile,
+    mutationKey: ["managed-restaurant"],
+    onSuccess: (_, { name, description }) => {
+      const cached = queryClient.getQueryData<GetManagerRestaurant>([
+        "managed-restaurant",
+      ]);
+      if (cached) {
+        queryClient.setQueryData<GetManagerRestaurant>(["managed-restaurant"], {
+          ...cached,
+          name,
+          description,
+        });
+      }
+
+      toast.success("Perfil atualizado com sucesso!");
+    },
+    onError: () => {
+      toast.error("Falha ao atualizar o perfil, tente novamente");
+    },
+  });
+  async function handleUpdateProfile(data: SetProfileSchema) {
+    updateProfileMutate(data);
+  }
 
   const {
     handleSubmit,
@@ -37,9 +71,6 @@ export function DetailsStoresProfileDialog() {
     },
   });
 
-  function updateProfileRestaurant(data: SetProfileSchema) {
-    console.log(data);
-  }
   return (
     <DialogContent>
       <DialogHeader>
@@ -48,7 +79,7 @@ export function DetailsStoresProfileDialog() {
           Atualize as informações do perfil da sua loja abaixo.
         </DialogDescription>
       </DialogHeader>
-      <form onSubmit={handleSubmit(updateProfileRestaurant)}>
+      <form onSubmit={handleSubmit(handleUpdateProfile)}>
         <div className="space-y-4 py-4">
           <div className="grid grid-cols-4 items-center gap-7">
             <Label className="inline text-right" htmlFor="name">
@@ -83,7 +114,7 @@ export function DetailsStoresProfileDialog() {
               Cancelar
             </Button>
           </DialogClose>
-          <Button type="submit" variant="success">
+          <Button type="submit" variant="success" disabled={isPending}>
             Salvar
           </Button>
         </DialogFooter>

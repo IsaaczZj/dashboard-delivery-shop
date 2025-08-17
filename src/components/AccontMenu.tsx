@@ -23,8 +23,9 @@ export function AccontMenu() {
   });
   const { data: managedRestuarant, isLoading: isLoadingManagerRestaurant } =
     useQuery({
-      queryKey: ["managed-resturant"],
+      queryKey: ["managed-restaurant"],
       queryFn: getManagerRestaurant,
+      staleTime:Infinity
     });
 
   return (

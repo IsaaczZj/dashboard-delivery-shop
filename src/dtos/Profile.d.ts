@@ -5,5 +5,10 @@ interface ProfileRespose {
   role: "manager" | "customer";
   createdAt: Date | null;
   updatedAt: Date | null;
-  email:string
+  email: string;
+}
+
+interface UpdateProfile {
+  name: string;
+  description: string;
 }
