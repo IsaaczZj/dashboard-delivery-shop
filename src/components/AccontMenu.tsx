@@ -9,13 +9,13 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getProfile } from "@/api/get-profile";
-import { getManagerRestaurant } from "@/api/get-managed-restaurant";
+import { getProfile } from "@/api/profile-store/get-profile";
+import { getManagerRestaurant } from "@/api/profile-store/get-managed-restaurant";
 import { Skeleton } from "./ui/skeleton";
 import { Dialog, DialogTrigger } from "./ui/dialog";
 import { DetailsStoresProfileDialog } from "./DetailsStoreProfileDialog";
-import { useState } from "react";
-import { logout } from "@/api/logout";
+
+import { logout } from "@/api/profile-store/logout";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -36,7 +36,7 @@ export function AccontMenu() {
     mutationFn: logout,
     onSuccess: () => {
       navigate("/sign-in", { replace: true });
-      toast.success('Até a proxima')
+      toast.success("Até a proxima");
     },
   });
 

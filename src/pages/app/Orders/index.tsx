@@ -10,8 +10,17 @@ import {
 import { OrderItem } from "./OrderItem";
 import { OrdersFilters } from "./OrderFilters";
 import { Pagination } from "@/components/Pagination";
+import { useQuery } from "@tanstack/react-query";
+import { getOrders } from "@/api/store-orders/get-orders";
 
 export function Orders() {
+  const { data: result } = useQuery<GetOrdersResponse>({
+    queryFn: getOrders,
+    queryKey: ["orders"],
+  });
+  console.log(result);
+  
+
   return (
     <div className="flex min-h-screen flex-col gap-4">
       <h1 className="text-3xl font-bold tracking-wide">Pedidos</h1>
@@ -32,14 +41,17 @@ export function Orders() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Array.from({ length: 10 }).map((_, i) => (
-                <OrderItem key={i} />
-              ))}
+              {result &&
+                result.orders.map((order) => (
+                  <OrderItem order={order} key={order.orderId} />
+                ))}
             </TableBody>
             <TableFooter>
-              <TableCell colSpan={8}>
-                <Pagination pageIndex={0} totalRegisters={105} perPage={10} />
-              </TableCell>
+              <TableRow>  
+                <TableCell colSpan={8}>
+                  <Pagination pageIndex={0} totalRegisters={105} perPage={10} />
+                </TableCell>
+              </TableRow>
             </TableFooter>
           </Table>
         </div>

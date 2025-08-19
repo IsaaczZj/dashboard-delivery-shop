@@ -11,14 +11,14 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-import { getManagerRestaurant } from "@/api/get-managed-restaurant";
+import { getManagerRestaurant } from "@/api/profile-store/get-managed-restaurant";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   updateProfileSchema,
   type UpdateProfileT,
 } from "@/schemas/updateProfileSchema";
-import { updateProfile } from "@/api/update-profile";
+import { updateProfile } from "@/api/profile-store/update-profile";
 import { toast } from "sonner";
 
 export function DetailsStoresProfileDialog() {
