@@ -12,14 +12,25 @@ import { OrdersFilters } from "./OrderFilters";
 import { Pagination } from "@/components/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import { getOrders } from "@/api/store-orders/get-orders";
+import { useSearchParams } from "react-router";
+import z from "zod";
 
 export function Orders() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageIndex = z.coerce
+    .number()
+    .transform((page) => page - 1)
+    .parse(searchParams.get("page") ?? "1");
   const { data: result } = useQuery<GetOrdersResponse>({
-    queryFn: getOrders,
-    queryKey: ["orders"],
+    queryFn: () => getOrders({ pageIndex }),
+    queryKey: ["orders",pageIndex],
   });
-  console.log(result);
-  
+  function handlePaginate(pageIndex: number) {
+    setSearchParams((prev) => {
+      prev.set("page", String(pageIndex + 1));
+      return prev;
+    });
+  }
 
   return (
     <div className="flex min-h-screen flex-col gap-4">
@@ -47,9 +58,16 @@ export function Orders() {
                 ))}
             </TableBody>
             <TableFooter>
-              <TableRow>  
+              <TableRow>
                 <TableCell colSpan={8}>
-                  <Pagination pageIndex={0} totalRegisters={105} perPage={10} />
+                  {result && (
+                    <Pagination
+                      onPageChange={handlePaginate}
+                      pageIndex={result.meta.pageIndex}
+                      totalRegisters={result.meta.totalCount}
+                      perPage={result.meta.perPage}
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             </TableFooter>

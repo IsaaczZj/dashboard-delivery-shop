@@ -12,3 +12,6 @@ interface GetOrdersResponse {
     totalCount: number;
   };
 }
+interface GetOrdersQuery {
+  pageIndex?: number | null;
+}

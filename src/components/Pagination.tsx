@@ -10,11 +10,13 @@ interface PaginationProps {
   pageIndex: number;
   totalRegisters: number;
   perPage: number;
+  onPageChange: (pageIndex: number) => void;
 }
 export function Pagination({
   pageIndex,
   perPage,
   totalRegisters,
+  onPageChange,
 }: PaginationProps) {
   const pages = Math.ceil(totalRegisters / perPage) || 1;
 
@@ -32,6 +34,8 @@ export function Pagination({
             variant="outline"
             className="h-8 w-8 p-0"
             title="Primeira página"
+            onClick={() => onPageChange(0)}
+            disabled={pageIndex === 0}
           >
             <ChevronsLeft className="size-5" />
           </Button>
@@ -39,6 +43,8 @@ export function Pagination({
             variant="outline"
             className="h-8 w-8 p-0"
             title="Página anterior"
+            onClick={() => onPageChange(pageIndex - 1)}
+            disabled={pageIndex === 0}
           >
             <ChevronLeft className="size-5" />
           </Button>
@@ -46,6 +52,8 @@ export function Pagination({
             variant="outline"
             className="h-8 w-8 p-0"
             title="Próxima página"
+            onClick={() => onPageChange(pageIndex + 1)}
+            disabled={pages <= pageIndex + 1}
           >
             <ChevronRight className="size-5" />
           </Button>
@@ -54,6 +62,8 @@ export function Pagination({
             variant="outline"
             className="h-8 w-8 p-0"
             title="Última página"
+            onClick={() => onPageChange(pages - 1)}
+            disabled={pages <= pageIndex + 1}
           >
             <ChevronsRight className="size-5" />
           </Button>
