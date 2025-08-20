@@ -14,4 +14,7 @@ interface GetOrdersResponse {
 }
 interface GetOrdersQuery {
   pageIndex?: number | null;
+  customerName?: string | null;
+  orderId?: string | null;
+  status?: string | null;
 }

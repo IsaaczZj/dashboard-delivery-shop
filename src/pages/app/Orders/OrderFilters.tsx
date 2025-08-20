@@ -1,3 +1,4 @@
+import { getOrders } from "@/api/store-orders/get-orders";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,19 +13,58 @@ import {
   type OrderFiltersSchema,
 } from "@/schemas/orderFilterSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import { Search, X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router";
-import { toast } from "sonner";
 
 export function OrdersFilters() {
-  const { register, handleSubmit, control } = useForm<OrderFiltersSchema>({
+  const queryClient = new QueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const orderId = searchParams.get("orderId") ?? "";
+  const customerName = searchParams.get("customerName") ?? "";
+  const status = searchParams.get("status")
+
+  const { register, handleSubmit, control,reset } = useForm<OrderFiltersSchema>({
     resolver: zodResolver(orderFiltersSchema),
+    defaultValues: {
+      customerName,
+      orderId,
+      status: status ?? "all",
+    },
   });
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  function handleFilter(data: OrderFiltersSchema) {
-    console.log(data);
+  function handleFilter({ orderId, customerName, status }: OrderFiltersSchema) {
+    setSearchParams((prev) => {
+      if (orderId) {
+        prev.set("orderId", orderId);
+      } else {
+        prev.delete("orderId");
+      }
+      if (customerName) {
+        prev.set("customerName", customerName);
+      } else {
+        prev.delete("customerName");
+      }
+      if (status) {
+        prev.set("status", status);
+      } else {
+        prev.delete("status");
+      }
+      prev.set("page", "1");
+      return prev;
+    });
+  }
+
+  function handleClearFilter() {
+    setSearchParams((prev) => {
+      prev.delete("orderId");
+      prev.delete("customerName");
+      prev.delete("status");
+      prev.set("page", "1");
+      return prev;
+    });
+    reset()
   }
 
   return (
@@ -42,7 +82,7 @@ export function OrdersFilters() {
       <Input
         placeholder="Nome do cliente"
         className="h-8 w-[400px]"
-        type="number"
+        type="text"
         {...register("customerName")}
       />
       <Controller
@@ -75,7 +115,12 @@ export function OrdersFilters() {
         <Search className="size-5" />
         Filtrar resultados
       </Button>
-      <Button type="button" variant="outline" size={"sm"}>
+      <Button
+        type="button"
+        variant="outline"
+        size={"sm"}
+        onClick={handleClearFilter}
+      >
         <X className="size-5" />
         Remover filtros
       </Button>

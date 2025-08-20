@@ -17,15 +17,27 @@ import z from "zod";
 
 export function Orders() {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const orderId = searchParams.get("orderId");
+  const status = searchParams.get("status");
+  const customerName = searchParams.get("customerName");
+
   const pageIndex = z.coerce
     .number()
     .transform((page) => page - 1)
     .parse(searchParams.get("page") ?? "1");
-  const { data: result } = useQuery<GetOrdersResponse>({
-    queryFn: () => getOrders({ pageIndex }),
-    queryKey: ["orders",pageIndex],
+
+  const { data: result } = useQuery({
+    queryKey: ["orders", pageIndex, customerName, orderId, status],
+    queryFn: () =>
+      getOrders({
+        pageIndex,
+        customerName,
+        orderId,
+        status: status === "all" ? null : status,
+      }),
   });
-  function handlePaginate(pageIndex: number) {
+  function onPageChange(pageIndex: number) {
     setSearchParams((prev) => {
       prev.set("page", String(pageIndex + 1));
       return prev;
@@ -54,7 +66,7 @@ export function Orders() {
             <TableBody>
               {result &&
                 result.orders.map((order) => (
-                  <OrderItem order={order} key={order.orderId} />
+                  <OrderItem key={order.orderId} order={order} />
                 ))}
             </TableBody>
             <TableFooter>
@@ -62,7 +74,7 @@ export function Orders() {
                 <TableCell colSpan={8}>
                   {result && (
                     <Pagination
-                      onPageChange={handlePaginate}
+                      onPageChange={onPageChange}
                       pageIndex={result.meta.pageIndex}
                       totalRegisters={result.meta.totalCount}
                       perPage={result.meta.perPage}

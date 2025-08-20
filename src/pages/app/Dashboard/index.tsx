@@ -4,7 +4,7 @@ import { DayOrdersAmountCard } from "./DayOrdersAmountCard";
 import { MonthCanceledAmountCard } from "./MonthCanceledAmountCard";
 import { RevenueChart } from "./RevenueChart";
 import { PopularProductsChart } from "./PopularProdutcsChart";
-import { useEffect } from "react";
+
 
 export function Dashboard() {
   return (
