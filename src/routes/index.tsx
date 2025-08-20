@@ -10,9 +10,22 @@ import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
   {
+    path: "/auth",
+    element: <AuthLayout />,
+    children: [
+      {
+        element: <SignIn />,
+        index: true,
+      },
+      {
+        path: "sign-up",
+        element: <SignUp />,
+      },
+    ],
+  },
+  {
     path: "/",
     element: <DashboardLayout />,
-    errorElement: <NotFound />,
     children: [
       {
         path: "/",
@@ -25,18 +38,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/",
-
-    element: <AuthLayout />,
-    children: [
-      {
-        path: "/sign-in",
-        element: <SignIn />,
-      },
-      {
-        path: "/sign-up",
-        element: <SignUp />,
-      },
-    ],
+    path: "*",
+    element: <NotFound />,
   },
 ]);

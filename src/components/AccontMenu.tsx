@@ -35,7 +35,7 @@ export function AccontMenu() {
   const { mutateAsync: singOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      navigate("/sign-in", { replace: true });
+      navigate("/auth", { replace: true });
       toast.success("Até a proxima");
     },
   });

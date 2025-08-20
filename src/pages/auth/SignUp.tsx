@@ -44,7 +44,7 @@ export function SignUp() {
         className="absolute top-8 right-8 text-xl font-semibold"
         variant="ghost"
       >
-        <Link to="/">Fazer login</Link>
+        <Link to="/auth">Fazer login</Link>
       </Button>
       <div className="flex w-[450px] flex-col justify-center gap-6">
         <header className="flex flex-col gap-2 text-center">

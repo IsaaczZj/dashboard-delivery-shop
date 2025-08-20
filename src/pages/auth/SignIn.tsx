@@ -42,7 +42,7 @@ export function SignIn() {
         className="absolute top-8 right-8 text-xl font-semibold"
         variant="ghost"
       >
-        <Link to="/sign-up">Novo estabelecimento</Link>
+        <Link to="/auth/sign-up">Novo estabelecimento</Link>
       </Button>
       <div className="flex w-[450px] flex-col justify-center gap-6">
         <header className="flex flex-col gap-2 text-center">
