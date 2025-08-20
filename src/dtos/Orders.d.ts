@@ -18,3 +18,27 @@ interface GetOrdersQuery {
   orderId?: string | null;
   status?: string | null;
 }
+
+interface GetOrderResponse {
+  id: string;
+  createdAt: string;
+  status: "pending" | "canceled" | "processing" | "delivering" | "delivered";
+  totalInCents: number;
+  customer: {
+    name: string;
+    email: string;
+    phone: number;
+  };
+  orderItems: {
+    id: string;
+    priceInCents: number;
+    quantity: number;
+    product: {
+      name: string;
+    };
+  }[];
+}
+
+interface GetOrderParams {
+  orderId: string;
+}

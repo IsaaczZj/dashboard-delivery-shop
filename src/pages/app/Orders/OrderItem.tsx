@@ -6,7 +6,8 @@ import { OrderDetails } from "./OrderDetails";
 import { OrderStatus } from "@/components/OrderStatus";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-
+import { useSearchParams } from "react-router";
+import { useState } from "react";
 
 interface OrderItemProps {
   order: {
@@ -17,29 +18,35 @@ interface OrderItemProps {
     total: number;
   };
 }
+
 export function OrderItem({ order }: OrderItemProps) {
+  const [isDetailsOpen, setIsDetailOpen] = useState(false);
   return (
     <TableRow>
       <TableCell className="py-4">
-        <Dialog>
+        <Dialog open={isDetailsOpen} onOpenChange={setIsDetailOpen}>
           <DialogTrigger asChild>
             <Button variant="outline" size="sm" title="Detalhes do pedido">
               <Search className="size-3" />
             </Button>
           </DialogTrigger>
-          <OrderDetails />
+          <OrderDetails orderId={order.orderId} open={isDetailsOpen} />
         </Dialog>
       </TableCell>
+
       <TableCell className="font-mono text-xs">{order.orderId}</TableCell>
       <TableCell className="text-muted-foreground">
-        {formatDistanceToNow(order.createdAt, { locale: ptBR, addSuffix:true })}
+        {formatDistanceToNow(order.createdAt, {
+          locale: ptBR,
+          addSuffix: true,
+        })}
       </TableCell>
       <TableCell>
         <OrderStatus status={order.status} />
       </TableCell>
       <TableCell className="font-medium">{order.customerName}</TableCell>
       <TableCell className="font-medium">
-        {order.total.toLocaleString("pt-BR", {
+        {(order.total / 100).toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
         })}
