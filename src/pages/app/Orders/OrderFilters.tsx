@@ -104,7 +104,7 @@ export function OrdersFilters() {
               <SelectItem value="pending">Pendente</SelectItem>
               <SelectItem value="caceled">Cancelado</SelectItem>
               <SelectItem value="processing">Em preparo</SelectItem>
-              <SelectItem value="delivering">Em preparo</SelectItem>
+              <SelectItem value="delivering">Em rota</SelectItem>
               <SelectItem value="delivered">Entregue</SelectItem>
             </SelectContent>
           </Select>
