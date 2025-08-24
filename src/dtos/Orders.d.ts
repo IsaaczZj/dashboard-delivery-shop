@@ -42,3 +42,16 @@ interface GetOrderResponse {
 interface GetOrderParams {
   orderId: string;
 }
+
+interface GetMonthOrdersAmountResponse{
+  amount:number
+  diffFromLastMonth:number
+}
+interface GetMonthOrdersRevenueResponse{
+  receipt:number
+  diffFromLastMonth:number
+}
+interface GetDayOrdersAmountResponse{
+  amount:number
+  diffFromYesterday:number
+}
