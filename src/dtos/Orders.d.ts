@@ -43,15 +43,23 @@ interface GetOrderParams {
   orderId: string;
 }
 
-interface GetMonthOrdersAmountResponse{
-  amount:number
-  diffFromLastMonth:number
+interface GetMonthOrdersAmountResponse {
+  amount: number;
+  diffFromLastMonth: number;
 }
-interface GetMonthOrdersRevenueResponse{
+interface GetMonthOrdersRevenueResponse {
+  receipt: number;
+  diffFromLastMonth: number;
+}
+interface GetDayOrdersAmountResponse {
+  amount: number;
+  diffFromYesterday: number;
+}
+type GetPopularProductsResponse = {
+  product: string;
+  amount: number;
+}[];
+type GetDailyRevenueResponse = {
+  date:string
   receipt:number
-  diffFromLastMonth:number
-}
-interface GetDayOrdersAmountResponse{
-  amount:number
-  diffFromYesterday:number
-}
+}[];

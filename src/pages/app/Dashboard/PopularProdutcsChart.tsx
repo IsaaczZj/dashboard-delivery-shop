@@ -1,4 +1,6 @@
+import { getPopularProducts } from "@/api/store-dashboard/get-popular-products";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 import { BarChart } from "lucide-react";
 
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
@@ -20,6 +22,10 @@ const COLORS = [
 ];
 
 export function PopularProductsChart() {
+  const { data: popularProducts } = useQuery({
+    queryFn: getPopularProducts,
+    queryKey: ["metrics", "popular-products"],
+  });
   return (
     <Card className="col-span-3">
       <CardHeader className="pb-4">
@@ -31,70 +37,72 @@ export function PopularProductsChart() {
         </div>
       </CardHeader>
       <CardContent className="focus-within:outline-none">
-        <ResponsiveContainer width="100%" height={240}>
-          <PieChart className="text-md">
-            <Pie
-              data={data}
-              dataKey="amount"
-              nameKey="products"
-              cx="50%"
-              cy="50%"
-              outerRadius={86}
-              innerRadius={60}
-              strokeWidth={4}
-              labelLine={false}
-              label={({
-                cx,
-                cy,
-                midAngle,
-                innerRadius,
-                outerRadius,
-                index,
-              }: {
-                cx?: number;
-                cy?: number;
-                midAngle?: number;
-                innerRadius?: number;
-                outerRadius?: number;
-                index?: number;
-              }) => {
-                if (
-                  typeof index !== "number" ||
-                  typeof cx !== "number" ||
-                  typeof cy !== "number" ||
-                  typeof midAngle !== "number" ||
-                  typeof innerRadius !== "number" ||
-                  typeof outerRadius !== "number"
-                )
-                  return null;
-                const RADIAN = Math.PI / 180;
-                const radius = innerRadius + (outerRadius - innerRadius) + 20;
-                const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                const y = cy + radius * Math.sin(-midAngle * RADIAN);
+        {popularProducts ? (
+          <ResponsiveContainer width="100%" height={240}>
+            <PieChart className="text-md">
+              <Pie
+                data={popularProducts}
+                dataKey="amount"
+                nameKey="products"
+                cx="50%"
+                cy="50%"
+                outerRadius={86}
+                innerRadius={60}
+                strokeWidth={4}
+                labelLine={false}
+                label={({
+                  cx,
+                  cy,
+                  midAngle,
+                  innerRadius,
+                  outerRadius,
+                  index,
+                }: {
+                  cx?: number;
+                  cy?: number;
+                  midAngle?: number;
+                  innerRadius?: number;
+                  outerRadius?: number;
+                  index?: number;
+                }) => {
+                  if (
+                    typeof index !== "number" ||
+                    typeof cx !== "number" ||
+                    typeof cy !== "number" ||
+                    typeof midAngle !== "number" ||
+                    typeof innerRadius !== "number" ||
+                    typeof outerRadius !== "number"
+                  )
+                    return null;
+                  const RADIAN = Math.PI / 180;
+                  const radius = innerRadius + (outerRadius - innerRadius) + 20;
+                  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                  const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-                return (
-                  <text
-                    x={x}
-                    y={y}
-                    className="fill-muted-foreground text-md"
-                    textAnchor={x > cx ? "start" : "end"}
-                    dominantBaseline="central"
-                  >
-                    {`${data[index].products.length > 12 ? data[index].products.substring(0, 12).concat("...") : data[index].products} - (${data[index].amount})`}
-                  </text>
-                );
-              }}
-            >
-              {data.map((_, i) => (
-                <Cell
-                  key={i}
-                  fill={COLORS[i]}
-                  className="stroke-[#18181b] hover:opacity-80"
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+                  return (
+                    <text
+                      x={x}
+                      y={y}
+                      className="fill-muted-foreground text-md"
+                      textAnchor={x > cx ? "start" : "end"}
+                      dominantBaseline="central"
+                    >
+                      {`${popularProducts[index].product.length > 12 ? popularProducts[index].product.substring(0, 12).concat("...") : popularProducts[index].product} - (${popularProducts[index].amount})`}
+                    </text>
+                  );
+                }}
+              >
+                {data.map((_, i) => (
+                  <Cell
+                    key={i}
+                    fill={COLORS[i]}
+                    className="stroke-[#18181b] hover:opacity-80"
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        ) : null}
       </CardContent>
     </Card>
   );
