@@ -63,3 +63,8 @@ type GetDailyRevenueResponse = {
   date:string
   receipt:number
 }[];
+
+interface GetDailyRevenuePeriodQuery{
+  from?:Date,
+  to?:Date
+}

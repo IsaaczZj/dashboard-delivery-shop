@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { DayPicker, type DateRange } from "react-day-picker";
 import { ptBR as ptbr } from "react-day-picker/locale";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 import {
@@ -25,14 +25,23 @@ import {
   YAxis,
 } from "recharts";
 import colors from "tailwindcss/colors";
-import { Calendar, X } from "lucide-react";
+import { Calendar, Receipt, X } from "lucide-react";
+import { toast } from "sonner";
 
 export function RevenueChart() {
-  const [day, setDay] = useState<DateRange | undefined>();
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 7),
+    to: new Date(),
+  });
+
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const { data: dailyRevenuePeriod } = useQuery({
-    queryFn: getDailyRevenuePeriod,
-    queryKey: ["metrics", "daily-revenue-period"],
+    queryFn: () =>
+      getDailyRevenuePeriod({
+        from: dateRange?.from,
+        to: dateRange?.to,
+      }),
+    queryKey: ["metrics", "daily-revenue-period", dateRange],
   });
 
   function formatDateRange(dateRange: DateRange | undefined) {
@@ -46,6 +55,15 @@ export function RevenueChart() {
 
     return formatedDate;
   }
+
+  const chartData = useMemo(() => {
+    return dailyRevenuePeriod?.map((chartItem) => {
+      return {
+        ...chartItem,
+        receipt: chartItem.receipt / 100,
+      };
+    });
+  }, [dailyRevenuePeriod]);
 
   return (
     <Card className="col-span-6">
@@ -64,7 +82,7 @@ export function RevenueChart() {
             onClick={() => setIsDatePickerOpen(true)}
           >
             <Calendar />
-            {formatDateRange(day)}
+            {formatDateRange(dateRange)}
           </button>
 
           <div>
@@ -89,16 +107,16 @@ export function RevenueChart() {
                         weekday: "uppercase font-medium text-xs",
                         day: "text-zinc-300 hover:bg-zinc-700 rounded-lg transition-colors",
                         caption_label: "uppercase",
-                        today: "border border-lime-300",
+                        today: "border border-purple-300",
                         selected:
-                          "bg-lime-300 text-lime-950 font-semibold hover:bg-lime-400",
+                          "bg-purple-300 text-purple-950 font-semibold hover:bg-purple-400",
                         disabled: "text-zinc-300 cursor-not-allowed",
-                        range_end: "bg-lime-700",
-                        range_start: "bg-lime-700",
-                        range_middle: "bg-lime-700",
+                        range_end: "bg-purple-700",
+                        range_start: "bg-purple-700",
+                        range_middle: "bg-purple-700",
                       }}
-                      selected={day}
-                      onSelect={setDay}
+                      selected={dateRange}
+                      onSelect={setDateRange}
                     />
                   </div>
                 </div>
@@ -111,7 +129,7 @@ export function RevenueChart() {
         <ResponsiveContainer width="100%" height={240}>
           <LineChart
             tabIndex={-1}
-            data={dailyRevenuePeriod}
+            data={chartData}
             className="text-md pointer-events-none"
           >
             <YAxis
