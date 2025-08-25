@@ -1,4 +1,3 @@
-import { getOrders } from "@/api/store-orders/get-orders";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,26 +12,26 @@ import {
   type OrderFiltersSchema,
 } from "@/schemas/orderFilterSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { QueryClient, useQuery } from "@tanstack/react-query";
+
 import { Search, X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router";
 
 export function OrdersFilters() {
-  const queryClient = new QueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const orderId = searchParams.get("orderId") ?? "";
   const customerName = searchParams.get("customerName") ?? "";
-  const status = searchParams.get("status")
+  const status = searchParams.get("status");
 
-  const { register, handleSubmit, control,reset } = useForm<OrderFiltersSchema>({
-    resolver: zodResolver(orderFiltersSchema),
-    defaultValues: {
-      customerName,
-      orderId,
-      status: status ?? "all",
-    },
-  });
+  const { register, handleSubmit, control, reset } =
+    useForm<OrderFiltersSchema>({
+      resolver: zodResolver(orderFiltersSchema),
+      defaultValues: {
+        customerName,
+        orderId,
+        status: status ?? "all",
+      },
+    });
 
   function handleFilter({ orderId, customerName, status }: OrderFiltersSchema) {
     setSearchParams((prev) => {
@@ -64,7 +63,7 @@ export function OrdersFilters() {
       prev.set("page", "1");
       return prev;
     });
-    reset()
+    reset();
   }
 
   return (

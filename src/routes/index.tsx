@@ -5,6 +5,7 @@ import { Dashboard } from "@/pages/app/Dashboard";
 import { Orders } from "@/pages/app/Orders";
 import { SignIn } from "@/pages/auth/SignIn";
 import { SignUp } from "@/pages/auth/SignUp";
+import { Error } from "@/pages/Error";
 
 import { createBrowserRouter } from "react-router";
 
@@ -12,6 +13,7 @@ export const router = createBrowserRouter([
   {
     path: "/auth",
     element: <AuthLayout />,
+
     children: [
       {
         element: <SignIn />,
@@ -26,6 +28,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <DashboardLayout />,
+    errorElement: <Error />,
     children: [
       {
         path: "/",

@@ -25,7 +25,7 @@ import {
   YAxis,
 } from "recharts";
 import colors from "tailwindcss/colors";
-import { Calendar, Loader2, Receipt, X } from "lucide-react";
+import { Calendar, Loader2, X } from "lucide-react";
 
 export function RevenueChart() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
