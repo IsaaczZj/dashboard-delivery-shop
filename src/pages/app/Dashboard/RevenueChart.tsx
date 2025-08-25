@@ -25,8 +25,7 @@ import {
   YAxis,
 } from "recharts";
 import colors from "tailwindcss/colors";
-import { Calendar, Receipt, X } from "lucide-react";
-import { toast } from "sonner";
+import { Calendar, Loader2, Receipt, X } from "lucide-react";
 
 export function RevenueChart() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -126,34 +125,40 @@ export function RevenueChart() {
         </div>
       </CardHeader>
       <CardContent className="focus-within:outline-none">
-        <ResponsiveContainer width="100%" height={240}>
-          <LineChart
-            tabIndex={-1}
-            data={chartData}
-            className="text-md pointer-events-none"
-          >
-            <YAxis
-              stroke="#888"
-              axisLine={false}
-              tickLine={false}
-              width={90}
-              tickFormatter={(value: number) =>
-                value.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })
-              }
-            />
-            <XAxis dataKey="date" tickLine={false} axisLine={false} dy={16} />
-            <CartesianGrid vertical={false} className="stroke-muted" />
-            <Line
-              type="bumpX"
-              strokeWidth={2}
-              dataKey="receipt"
-              stroke={colors.rose[700]}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        {dailyRevenuePeriod ? (
+          <ResponsiveContainer width="100%" height={240}>
+            <LineChart
+              tabIndex={-1}
+              data={chartData}
+              className="text-md pointer-events-none"
+            >
+              <YAxis
+                stroke="#888"
+                axisLine={false}
+                tickLine={false}
+                width={90}
+                tickFormatter={(value: number) =>
+                  value.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })
+                }
+              />
+              <XAxis dataKey="date" tickLine={false} axisLine={false} dy={16} />
+              <CartesianGrid vertical={false} className="stroke-muted" />
+              <Line
+                type="bumpX"
+                strokeWidth={2}
+                dataKey="receipt"
+                stroke={colors.rose[700]}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -2,6 +2,7 @@ import { getMonthOrdersAmount } from "@/api/store-dashboard/get-month-orders-amo
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { Utensils } from "lucide-react";
+import { MetricCardSkeleton } from "./MetricCardSkeleton";
 
 export function MonthOrdersAmountCard() {
   const { data: monthOrdersAmount } = useQuery({
@@ -14,33 +15,40 @@ export function MonthOrdersAmountCard() {
         <CardTitle className="text-xl">Pedidos (mês) </CardTitle>
         <Utensils className="text-muted-foreground size-5" />
       </CardHeader>
-      {monthOrdersAmount ? (
-        <CardContent className="flex flex-col gap-1">
-          <span className="text-3xl font-semibold tracking-wide">
-            {monthOrdersAmount?.amount}
-          </span>
-          {monthOrdersAmount?.diffFromLastMonth >= 0 ? (
-            <>
-              <p className="text-muted-foreground text-sm">
-                <span className="text-emerald-200 dark:text-emerald-400">
-                  +{monthOrdersAmount.diffFromLastMonth.toLocaleString("pt-BR")}
-                  %
-                </span>{" "}
-                em relação ao mês passado
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="text-muted-foreground text-sm">
-                <span className="text-rose-200 dark:text-rose-400">
-                  {monthOrdersAmount.diffFromLastMonth}%
-                </span>{" "}
-                em relação ao mês passado
-              </p>
-            </>
-          )}
-        </CardContent>
-      ) : null}
+      <CardContent className="flex flex-col gap-1">
+        {monthOrdersAmount ? (
+          <>
+            <span className="text-3xl font-semibold tracking-wide">
+              {monthOrdersAmount?.amount}
+            </span>
+            {monthOrdersAmount?.diffFromLastMonth >= 0 ? (
+              <>
+                <p className="text-muted-foreground text-sm">
+                  <span className="text-emerald-200 dark:text-emerald-400">
+                    +
+                    {monthOrdersAmount.diffFromLastMonth.toLocaleString(
+                      "pt-BR",
+                    )}
+                    %
+                  </span>{" "}
+                  em relação ao mês passado
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-muted-foreground text-sm">
+                  <span className="text-rose-200 dark:text-rose-400">
+                    {monthOrdersAmount.diffFromLastMonth}%
+                  </span>{" "}
+                  em relação ao mês passado
+                </p>
+              </>
+            )}
+          </>
+        ) : (
+          <MetricCardSkeleton />
+        )}
+      </CardContent>
     </Card>
   );
 }
